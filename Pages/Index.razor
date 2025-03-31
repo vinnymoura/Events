@@ -1,0 +1,57 @@
+﻿@page "/"
+@using EventosWebApp.Models
+@using MudBlazor
+@inject IHttpClientFactory ClientFactory
+@inject NavigationManager NavigationManager
+
+<div class="d-flex justify-center flex-wrap gap-8 mt-20">
+
+    @if (_eventos == null)
+    {
+        <MudText Typo="Typo.body1">Carregando eventos...</MudText>
+    }
+    else
+    {
+        @foreach (var evento in _eventos.Where(evento => evento.Ativo).OrderBy(evento => evento.DataIni))
+        {
+            <MudCard Class="pa-md-2 d-flex " Style="width: 250px" Elevation="2">
+                <MudCardMedia Image="@GetImagePath(evento.Description)" Height="200" Style="width: 100%"/>
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">@evento.Description</MudText>
+                    <MudText Typo="Typo.body2">@evento.DataIni.ToString("dd/MM/yyy")</MudText>
+                    <MudText Typo="Typo.body2">@evento.DataFim.ToString("dd/MM/yyy")</MudText>
+                </MudCardContent>
+                <MudCardActions Class="justify-end">
+                    <MudButton Variant="Variant.Text" Color="Color.Primary"
+                               OnClick="() => NavigateToEvent(evento.TipoEvento)">Saber mais
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        }
+    }
+</div>
+
+@code {
+    private List<Evento>? _eventos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = ClientFactory.CreateClient();
+        client.BaseAddress = new Uri("http://localhost:5118/"); // Ajuste a URL base conforme necessário
+        _eventos = await client.GetFromJsonAsync<List<Evento>>("Eventos.json");
+    }
+
+    private static string GetImagePath(string description)
+    {
+        var imageName = description.Replace(" ", "").ToLower() + ".jpg";
+        var wwwrootPath = $"img/{imageName}";
+        return wwwrootPath;
+    }
+
+    private void NavigateToEvent(int tipoEvento)
+    {
+        var url = $"/eventos/detalhes/{tipoEvento}";
+        NavigationManager.NavigateTo(url);
+    }
+
+}

@@ -1,0 +1,36 @@
+﻿@page "/Eventos/Detalhes/{Id:int}"
+@using EventosWebApp.Models
+@using MudBlazor
+
+@inject IHttpClientFactory ClientFactory
+
+<MudContainer Class="mt-16">
+    @if (_evento != null)
+    {
+        <MudText Typo="Typo.h3">@_evento.Description</MudText>
+        <MudImage Src="@($"/img/{_evento.Description.ToLower().Replace(" ", "")}.jpg")" Alt="Imagem do evento"
+                  Class="mt-4"/>
+        <MudText Class="mt-4">Data Início: @_evento.DataIni.ToString("dd/MM/yyyy")</MudText>
+        <MudText>Data Fim: @_evento.DataFim.ToString("dd/MM/yyyy")</MudText>
+    }
+    else
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+    }
+</MudContainer>
+
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private Evento? _evento;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = ClientFactory.CreateClient();
+        client.BaseAddress = new Uri("http://localhost:5118/"); // Ajuste a URL base conforme necessário
+        var eventos = await client.GetFromJsonAsync<List<Evento>>("Eventos.json");
+        _evento = eventos?.FirstOrDefault(e => e.TipoEvento == Id);
+    }
+
+}

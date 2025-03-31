@@ -1,0 +1,30 @@
+﻿[
+  {
+    "dataIni": "2025-04-08T09:00:00",
+    "dataFim": "2025-04-12T18:00:00",
+    "description": "South Summit",
+    "tipoEvento": 6,
+    "ativo": true
+  },
+  {
+    "dataIni": "2025-04-12T09:00:00",
+    "dataFim": "2025-04-20T18:00:00",
+    "description": "OAB",
+    "tipoEvento": 5,
+    "ativo": true
+  },
+  {
+    "dataIni": "2025-04-25T09:00:00",
+    "dataFim": "2025-04-30T18:00:00",
+    "description": "LGBTQIA",
+    "tipoEvento": 7,
+    "ativo": true
+  },
+  {
+    "dataIni": "2025-05-05T09:00:00",
+    "dataFim": "2025-05-12T18:00:00",
+    "description": "PoaCarnaval",
+    "tipoEvento": 8,
+    "ativo": true
+  }
+]

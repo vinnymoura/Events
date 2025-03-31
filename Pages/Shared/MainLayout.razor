@@ -1,0 +1,32 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@using MudBlazor
+
+<MudThemeProvider/>
+<MudPopoverProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <MudAppBar>
+        @if (!NavigationManager.Uri.EndsWith("/"))
+        {
+            <MudIconButton  Icon="@Icons.Material.Filled.ArrowBackIosNew"
+                            aria-label="delete"
+                            Size="Size.Medium"
+                            OnClick="NavigateToBack"/>
+        }
+        Eventos
+    </MudAppBar>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+@code {
+
+    private void NavigateToBack()
+    {
+        NavigationManager.NavigateTo("javascript:history.back()");
+    }
+}
